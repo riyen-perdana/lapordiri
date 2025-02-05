@@ -21,6 +21,7 @@ class ProvResource extends Resource
     protected static ?string $navigationGroup = 'Area';
     protected static ?string $navigationLabel = 'Provinsi';
     protected static ?string $pluralModelLabel = 'Provinsi';
+    protected static ?int $navigationSort = 1;
 
 
     public static function form(Form $form): Form
@@ -119,5 +120,10 @@ class ProvResource extends Resource
                     'required' => 'Nama Provinsi Harus Diisi',
                 ]),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

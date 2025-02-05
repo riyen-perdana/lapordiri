@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prov', function (Blueprint $table) {
+        Schema::create('kkot', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('prov_kode')->unique()->comment('Kode Provinsi');
-            $table->string('prov_nama')->comment('Nama Provinsi');
+            $table->string('kkot_prov_id')->comment('Relasi Kode Provinsi');
+            $table->integer('kkot_kode')->unique()->comment('Kode Kabupaten Kota');
+            $table->string('kkot_nama')->comment('Nama Kabupaten Kota');
             $table->timestamps();
+            $table->foreign('kkot_prov_id')->references('id')->on('prov');
         });
     }
 
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prov');
+        Schema::dropIfExists('kkot');
     }
 };

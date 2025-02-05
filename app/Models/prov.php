@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class prov extends Model
+class Prov extends Model
 {
     protected $table = 'prov';
     public $keyType = 'string';
@@ -41,6 +41,6 @@ class prov extends Model
      */
     public function kabkot(): HasMany
     {
-        return $this->hasMany(kabkot::class);
+        return $this->hasMany(kabkot::class, 'kkot_prov_id');
     }
 }
