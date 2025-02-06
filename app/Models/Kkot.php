@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Kkot extends Model
@@ -29,12 +31,17 @@ class Kkot extends Model
     protected function kkotNama(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Str::strtoupper($value),
+            get: fn ($value) => Str::ucwords($value),
         );
     }
 
     public function prov(): BelongsTo
     {
         return $this->belongsTo(Prov::class, 'kkot_prov_id');
+    }
+
+    public function kec(): HasMany
+    {
+        return $this->hasMany(Kec::class);
     }
 }

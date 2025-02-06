@@ -124,7 +124,7 @@ class KkotResource extends Resource
                 ->label('Provinsi')
                 ->getOptionLabelFromRecordUsing(fn(Model $record) => "$record->prov_nama")
                 ->validationMessages([
-                    'required' => 'Kolom Identitas Konsumen Harus Diisi',
+                    'required' => 'Kolom Kabupaten-Kota Konsumen Harus Diisi',
                 ])
                 ->createOptionForm(ProvResource::getCustomProvinsiForm())
                 ->createOptionAction(
