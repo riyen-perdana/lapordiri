@@ -41,6 +41,6 @@ class Prov extends Model
      */
     public function kabkot(): HasMany
     {
-        return $this->hasMany(kabkot::class, 'kkot_prov_id');
+        return $this->hasMany(Kkot::class, 'kkot_prov_id');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -11,7 +12,7 @@ class Kec extends Model
     public $keyType = 'string';
     public $incrementing = false;
     protected $fillable = [
-        'kec_prov_id',
+        'kec_kkot_id',
         'kec_kode',
         'kec_nama'
     ];

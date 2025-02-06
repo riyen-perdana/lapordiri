@@ -42,16 +42,12 @@ class KkotImporter extends Importer
 
     public function resolveRecord(): ?Kkot
     {
-        // $prov = Prov::select('id')->where('prov_kode', $this->data['prov'])->first();
-        // print_r($this->data);
         return Kkot::firstOrNew([
             'kkot_kode' => $this->data['kkot_kode'],
         ],[
             'kkot_nama' => $this->data['kkot_nama'],
             'kkot_prov_id' => $this->data['kkot_prov_id'],
         ]);
-
-        // return new Kkot();
     }
 
     public static function getCompletedNotificationBody(Import $import): string

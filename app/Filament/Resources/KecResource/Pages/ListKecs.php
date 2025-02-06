@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\KecResource\Pages;
 
+use App\Filament\Imports\KecImporter;
 use App\Filament\Resources\KecResource;
 use Filament\Actions\Action;
 use Filament\Actions;
@@ -20,8 +21,8 @@ class ListKecs extends ListRecords
             ->label('Tambah Kecamatan')
             ->color('success')
             ->icon('heroicon-o-plus-circle'),
-        ImportAction::make('importProvinsi')
-            ->importer(ProvImporter::class)
+        ImportAction::make('importKecamatan')
+            ->importer(KecImporter::class)
             ->label('Import Kecamatan')
             ->color('danger')
             ->icon('heroicon-o-arrow-up-on-square-stack')

@@ -42,9 +42,29 @@ class KecResource extends Resource
             ->emptyStateIcon('heroicon-o-bookmark')
             ->emptyStateHeading('Data Tidak Ditemukan')
             ->emptyStateDescription('Kami Sudah Mencari Keseluruh Sumber Data, Namun Data Tidak Ditemukan')
-            
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('index')
+                    ->rowIndex()
+                    ->label('No.')
+                    ->width('3%'),
+                Tables\Columns\TextColumn::make('kec_kode')
+                    ->label('Kode Kecamatan')
+                    ->sortable()
+                    ->searchable()
+                    ->width('15%'),
+                Tables\Columns\TextColumn::make('kec_nama')
+                    ->label('Nama Kecamatan')
+                    ->sortable()
+                    ->searchable()
+                    ->formatStateUsing(fn (string $state): string => ucwords($state)),
+                Tables\Columns\TextColumn::make('kkot.kkot_nama')
+                    ->label('Nama Kabupaten Kota')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kkot.prov.prov_nama')
+                    ->label('Nama Provinsi')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //
@@ -56,7 +76,8 @@ class KecResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('kec_kode');
     }
 
     public static function getRelations(): array
@@ -102,13 +123,14 @@ class KecResource extends Resource
                         ->closeModalByClickingAway(false)
                         ->modalAutofocus(true)
                 )
-                ->afterStateUpdated(fn (Get $get, Set $set) => $set('kec_kkot_id', null)),
+                ->afterStateUpdated(fn(Get $get, Set $set) => $set('kec_kkot_id', null))
+                ->dehydrated(true),
             Forms\Components\Select::make('kec_kkot_id')
                 ->preload()
                 ->placeholder('Pilih Kabupaten-Kota')
                 ->searchable()
                 ->required()
-                ->options(fn (Get $get): Collection => Kkot::query()
+                ->options(fn(Get $get): Collection => Kkot::query()
                     ->where('kkot_prov_id', $get('prov'))
                     ->pluck('kkot_nama', 'id'))
                 ->label('Kabupaten-Kota')
@@ -123,6 +145,24 @@ class KecResource extends Resource
                         ->closeModalByClickingAway(false)
                         ->modalAutofocus(true)
                 ),
+            Forms\Components\TextInput::make('kec_kode')
+                ->label('Kode Kecamatan')
+                ->required()
+                ->unique(ignoreRecord: true)
+                ->numeric()
+                ->validationMessages([
+                    'unique' => 'Kode Kecamatan Sudah Terdaftar, Isikan Yang Lain',
+                    'required' => 'Kode Kecamatan Harus Diisi',
+                    'numeric' => 'Kode Kecamatan Harus Berupa Angka',
+                ]),
+            Forms\Components\TextInput::make('kec_nama')
+                ->label('Nama Kecamatan')
+                ->required()
+                ->unique(ignoreRecord: true)
+                ->validationMessages([
+                    'unique' => 'Nama Kecamatan Sudah Terdaftar, Isikan Yang Lain',
+                    'required' => 'Nama Kecamatan Harus Diisi',
+                ]),
         ];
     }
 }

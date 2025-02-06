@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('kec_kkot_id')->comment('Relasi Kode Kabupaten-Kota');
             $table->integer('kec_kode')->unique()->comment('Kode Kecamatam');
             $table->string('kec_nama')->comment('Nama Kecamatan');
-            $table->foreign('kec_kkot_id')->references('id')->on('prov')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
+            $table->foreign('kec_kkot_id')->references('id')->on('kkot');
         });
     }
 
