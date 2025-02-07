@@ -118,7 +118,7 @@ class KecResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-                ->label('Hapus')
+                    ->label('Hapus')
                     ->requiresConfirmation()
                     ->successNotification(
                         Notification::make()

@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Filament\Resources\JnpResource\Pages;
+namespace App\Filament\Resources\JlpResource\Pages;
 
 use Filament\Actions;
 use Filament\Actions\Action;
-use App\Filament\Resources\JnpResource;
+use App\Filament\Resources\JlpResource;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 
-class EditJnp extends EditRecord
+class EditJlp extends EditRecord
 {
-    protected static string $resource = JnpResource::class;
-    protected static ?string $breadcrumb = 'Ubah Jenis Penerimaan';
-    protected static ?string $title = 'Ubah Jenis Penerimaan';
+    protected static string $resource = JlpResource::class;
+    protected static ?string $breadcrumb = 'Ubah Jalur Penerimaan';
+    protected static ?string $title = 'Ubah Jalur Penerimaan';
 
     /**
      * TODO: Redirect To Index Page After Edit Data
@@ -32,7 +32,7 @@ class EditJnp extends EditRecord
         return Notification::make()
             ->success()
             ->title('Sukses')
-            ->body('Data Jenis Penerimaan Berhasil Diubah');
+            ->body('Data Jalur Penerimaan Berhasil Diubah');
     }
 
     /**

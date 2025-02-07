@@ -2,42 +2,43 @@
 
 namespace App\Filament\Resources;
 
-use App\Models\Jnp;
+use App\Models\Jlp;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\JnpResource\Pages;
+use App\Filament\Resources\JlpResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\JnpResource\RelationManagers;
+use App\Filament\Resources\JlpResource\RelationManagers;
 
-class JnpResource extends Resource
+class JlpResource extends Resource
 {
-    protected static ?string $model = Jnp::class;
+    protected static ?string $model = Jlp::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
     protected static ?string $navigationGroup = 'Data Master';
-    protected static ?string $navigationLabel = 'Jenis Penerimaan';
-    protected static ?string $pluralModelLabel = 'Jenis Penerimaan';
-    protected static ?int $navigationSort = 5;
+    protected static ?string $navigationLabel = 'Jalur Penerimaan';
+    protected static ?string $pluralModelLabel = 'Jalur Penerimaan';
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('jnp_nama')
+                Forms\Components\TextInput::make('jlp_nama')
+                    ->label('Jalur Penerimaan')
                     ->required()
                     ->maxLength(255)
                     ->validationMessages([
-                        'required' => 'Kolom Jenis Penerimaan Harus Diisi',
-                        'maxLength' => 'Kolom Jenis Penerimaan Maksimal 255 Karakter',
-                    ])
-                    ->label('Jenis Penerimaan'),
-                Forms\Components\Toggle::make('jnp_status')
-                    ->label('Status Jenis Penerimaan')
+                        'required' => 'Kolom Jalur Penerimaan Tidak Boleh Kosong',
+                        'maxLength' => 'Kolom Jalur Penerimaan Maksimal 255 Karakter',
+                    ]),
+                Forms\Components\Toggle::make('jlp_status')
+                    ->label('Status Jalur Penerimaan')
                     ->default(false)
                     ->inline(false)
                     ->onColor('success')
@@ -57,11 +58,11 @@ class JnpResource extends Resource
                     ->rowIndex()
                     ->label('No.')
                     ->width('3%'),
-                Tables\Columns\TextColumn::make('jnp_nama')
-                    ->label('Jenis Penerimaan')
+                Tables\Columns\TextColumn::make('jlp_nama')
+                    ->label('Jalur Penerimaan')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ToggleColumn::make('jnp_status')
+                Tables\Columns\ToggleColumn::make('jlp_status')
                     ->label('Status')
                     ->sortable()
                     ->onIcon('heroicon-m-check-circle')
@@ -72,21 +73,20 @@ class JnpResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->label('Ubah'),
-                    Tables\Actions\DeleteAction::make()
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
                     ->label('Hapus')
-                        ->requiresConfirmation()
-                        ->successNotification(
-                            Notification::make()
-                                ->success()
-                                ->title('Sukses')
-                                ->body('Data Jenis Pendaftaran Berhasil Dihapus')
-                        )
-                        ->modalHeading(fn(Jnp $record) => 'Hapus Data ' . $record->jnp_nama . '')
-                        ->modalDescription('Apakah Anda Yakin Menghapus Data Ini?')
-                        ->modalCancelActionLabel('Tidak')
-                        ->modalSubmitActionLabel('Ya, Hapus Data'),
+                    ->requiresConfirmation()
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Sukses')
+                            ->body('Data Jalur Penerimaan Berhasil Dihapus')
+                    )
+                    ->modalHeading(fn(Jlp $record) => 'Hapus Data ' . $record->jlp_nama . '')
+                    ->modalDescription('Apakah Anda Yakin Menghapus Data Ini?')
+                    ->modalCancelActionLabel('Tidak')
+                    ->modalSubmitActionLabel('Ya, Hapus Data'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -105,9 +105,9 @@ class JnpResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListJnps::route('/'),
-            'create' => Pages\CreateJnp::route('/create'),
-            'edit' => Pages\EditJnp::route('/{record}/edit'),
+            'index' => Pages\ListJlps::route('/'),
+            'create' => Pages\CreateJlp::route('/create'),
+            'edit' => Pages\EditJlp::route('/{record}/edit'),
         ];
     }
 }
