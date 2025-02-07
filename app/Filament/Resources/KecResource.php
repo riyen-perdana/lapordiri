@@ -13,10 +13,16 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Actions\StaticAction;
+use function Laravel\Prompts\form;
 use Illuminate\Support\Collection;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Actions;
+use Filament\Notifications\Notification;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\KecResource\Pages;
+
 use NunoMaduro\Collision\Adapters\Phpunit\State;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\KecResource\RelationManagers;
@@ -56,7 +62,7 @@ class KecResource extends Resource
                     ->label('Nama Kecamatan')
                     ->sortable()
                     ->searchable()
-                    ->formatStateUsing(fn (string $state): string => ucwords($state)),
+                    ->formatStateUsing(fn(string $state): string => ucwords($state)),
                 Tables\Columns\TextColumn::make('kkot.kkot_nama')
                     ->label('Nama Kabupaten Kota')
                     ->sortable()
@@ -67,10 +73,63 @@ class KecResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
+                Filter::make('Area')
+                    ->form([
+                        Select::make('prov_id')
+                            ->label('Provinsi')
+                            ->placeholder('Pilih Provinsi')
+                            ->options(Prov::orderBy('prov_kode')->pluck('prov_nama', 'id'))
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(fn(Get $get, Set $set) => $set('kkot_id', null)),
+                        Select::make('kkot_id')
+                            ->options(fn(Get $get): Collection => Kkot::query()
+                                ->where('kkot_prov_id', $get('prov_id'))
+                                ->pluck('kkot_nama', 'id'))
+                            ->label('Kabupaten Kota')
+                            ->placeholder('Pilih Kabupaten Kota')
+                            ->searchable()
+                            ->preload()
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query->when($data['kkot_id'], function ($query) use ($data) {
+                            return  $query->where('kec_kkot_id', $data['kkot_id']);
+                        });
+                    }),
+                    // ->indicateUsing(function (array $data): ?string {
+                    //     if ($data['kkot_id']) {
+                    //         return 'Semua Kabupaten Kota';
+                    //     }
+                    // }),
+                // SelectFilter::make('prov_id')
+                //     ->relationship('kkot.prov', 'prov_nama')
+                //     ->label('Provinsi')
+                //     ->placeholder('Pilih Provinsi')
+                //     ->searchable()
+                //     ->preload()
+                // SelectFilter::make('kot_id')
+                //     ->relationship('kkot', 'kkot_nama')
+                //     ->label('Kabupaten Kota')
+                //     ->placeholder('Pilih Kabupaten Kota')
+                //     ->searchable()
+                //     ->preload(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                ->label('Hapus')
+                    ->requiresConfirmation()
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Sukses')
+                            ->body('Data Kecamatan Berhasil Dihapus')
+                    )
+                    ->modalHeading(fn(Kec $record) => 'Hapus Data ' . $record->kec_nama . '')
+                    ->modalDescription('Apakah Anda Yakin Menghapus Data Ini?')
+                    ->modalCancelActionLabel('Tidak')
+                    ->modalSubmitActionLabel('Ya, Hapus Data'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

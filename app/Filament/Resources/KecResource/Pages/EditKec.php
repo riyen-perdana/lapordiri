@@ -9,11 +9,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditKec extends EditRecord
 {
     protected static string $resource = KecResource::class;
+    protected static ?string $breadcrumb = 'Ubah Kecamatan';
+    protected static ?string $title = 'Ubah Kecamatan';
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
 }
