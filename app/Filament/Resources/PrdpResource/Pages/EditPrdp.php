@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Filament\Resources\UnvResource\Pages;
+namespace App\Filament\Resources\PrdpResource\Pages;
 
 use Filament\Actions;
 use Filament\Actions\Action;
-use App\Filament\Resources\UnvResource;
+use App\Filament\Resources\PrdpResource;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 
-class EditUnv extends EditRecord
+class EditPrdp extends EditRecord
 {
-    protected static string $resource = UnvResource::class;
-    protected static ?string $breadcrumb = 'Ubah Universitas';
-    protected static ?string $title = 'Ubah Universitas';
+    protected static string $resource = PrdpResource::class;
+    protected static ?string $breadcrumb = 'Ubah Program Studi';
+    protected static ?string $title = 'Ubah Program Studi';
 
     /**
      * TODO: Redirect To Index Page After Edit Data
@@ -32,7 +32,7 @@ class EditUnv extends EditRecord
         return Notification::make()
             ->success()
             ->title('Sukses')
-            ->body('Data Universitas Berhasil Diubah');
+            ->body('Data Program Studi Berhasil Diubah');
     }
 
     /**

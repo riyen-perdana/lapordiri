@@ -2,16 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UnvResource\Pages;
-use App\Filament\Resources\UnvResource\RelationManagers;
 use App\Models\Unv;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Notifications\Notification;
+use App\Filament\Resources\UnvResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\UnvResource\RelationManagers;
+use Filament\Forms\Components\Tabs\Tab;
 
 class UnvResource extends Resource
 {
@@ -20,7 +22,7 @@ class UnvResource extends Resource
     protected static ?string $navigationGroup = 'Data Pendidikan';
     protected static ?string $navigationLabel = 'Universitas';
     protected static ?string $pluralModelLabel = 'Universitas';
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
     {
@@ -39,6 +41,11 @@ class UnvResource extends Resource
                     ->rowIndex()
                     ->label('No.')
                     ->width('3%'),
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID Universitas')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('unv_nama')
                     ->label('Nama Universitas')
                     ->sortable()
@@ -49,6 +56,19 @@ class UnvResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Hapus')
+                    ->requiresConfirmation()
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Sukses')
+                            ->body('Data Universitas Berhasil Dihapus')
+                    )
+                    ->modalHeading(fn(Unv $record) => 'Hapus Data ' . $record->unv_nama . '')
+                    ->modalDescription('Apakah Anda Yakin Menghapus Data Ini?')
+                    ->modalCancelActionLabel('Tidak')
+                    ->modalSubmitActionLabel('Ya, Hapus Data'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
