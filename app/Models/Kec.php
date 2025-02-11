@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Kec extends Model
@@ -24,6 +25,13 @@ class Kec extends Model
         static::creating(function ($model) {
             $model->id = Str::uuid();
         });
+    }
+
+    protected function kecNama(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => Str::ucwords($value),
+        );
     }
 
     public function kkot(): BelongsTo

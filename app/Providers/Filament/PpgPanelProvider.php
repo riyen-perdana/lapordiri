@@ -27,7 +27,7 @@ class PpgPanelProvider extends PanelProvider
             ->id('ppg')
             ->path('ppg')
             // ->login()
-            ->font('Nunito')
+            ->font('Figtree')
             ->registration(Registration::class)
             ->colors([
                 'primary' => Color::Amber,
