@@ -162,7 +162,7 @@
                 <div class="max-w-screen-sm mx-auto text-center">
                     <h2 class="mb-2 text-3xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white">Formulir Lapor Diri Program Profesi Guru</h2>
                     <p class="mb-6 font-semibold text-gray-500 dark:text-gray-400 sm:text-sm md:text-sm lg:text-sm">Apabila Seluruh Data dan Berkas Sudah Ada, Silahkan Klik Tombol Di Bawah Untuk Mengisi Data</p>
-                    <a href="#" class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800">Pengisian Data</a>
+                    <a href="ppg/register" class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800">Pengisian Data</a>
                 </div>
             </div>
         </section>

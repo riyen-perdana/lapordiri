@@ -23,9 +23,21 @@ class Registration extends Register
                 Wizard::make([
                     Wizard\Step::make('Data Pribadi')
                         ->schema([
-                            TextInput::make('agm_nama')
-                                ->label('Agama')
-                        ]),
+                            TextInput::make('ppg_nik')
+                                ->label('Nomor Induk Kependudukan')
+                                ->autofocus()
+                                ->required()
+                                ->validationMessages([
+                                    'required' => 'Nomor Induk Kependudukan Harus Diisi',
+                                ]),
+                            TextInput::make('ppg_nuptk')
+                                ->label('NUPTK')
+                                ->required()
+                                ->validationMessages([
+                                    'required' => 'NUPTK Harus Diisi',
+                                ])
+                        ])
+                        ->columns(2),
                     Wizard\Step::make('step2')
                         ->schema([
                             TextInput::make('agm_nama')
@@ -47,5 +59,4 @@ class Registration extends Register
     {
         return 'Silahkan Isi Data Dan Berkas Anda';
     }
-
 }
