@@ -251,8 +251,16 @@ class Register extends Component implements HasForms, HasActions
                                 ->label('Kewarganegaraan')
                                 ->required()
                                 ->options([
-                                    'WNI' => 'WNI',
-                                    'WNA' => 'WNA',
+                                    'ID' => 'Indonesia',
+                                    'BN' => 'Brunei Darusallam',
+                                    'KH' => 'Kamboja',
+                                    'LA' => 'Laos',
+                                    'MM' => 'Myanmar',
+                                    'PH' => 'Filipina',
+                                    'TH' => 'Thailand',
+                                    'VN' => 'Vietnam',
+                                    'MY' => 'Malaysia',
+                                    'SG' => 'Singapore',
                                 ])
                                 ->placeholder('Pilih Kewarganegaraan')
                                 ->validationMessages([

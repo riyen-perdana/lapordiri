@@ -40,13 +40,15 @@ return new class extends Migration
             $table->string('ppg_ijz')->comment('File Ijazah');
             $table->string('ppg_trsk')->comment('File Transkrip Nilai');
             $table->string('ppg_sk_ajr')->comment('File SK Ajar');
-            
-
+            $table->string('ppg_prkt_ajr')->comment('File Perangkat Ajar');
+            $table->string('ppg_strf')->comment('File Sertifikat Ajar');
+            $table->string('ppg_dkmn')->comment('File Dokumen Ajar');
+            $table->string('ppg_invs')->comment('File Inovasi');
             $table->timestamps();
             $table->foreign('ppg_jnp_id')->references('id')->on('jnp');
             $table->foreign('ppg_agm_id')->references('id')->on('agm');
             $table->foreign('ppg_kec_id')->references('id')->on('kec');
-            $table->foreign('ppg_wrgn_id')->references('id')->on('wrgn');
+            // $table->foreign('ppg_wrgn_id')->references('id')->on('wrgn');
 
 
         });
