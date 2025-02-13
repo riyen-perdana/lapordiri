@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jnp', function (Blueprint $table) {
+        Schema::create('wrgn', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('jnp_nama')->comment('Jenis Pendaftaran');
-            $table->integer('jnp_mb')->comment('Biaya Masuk')->nullable();
-            $table->integer('jnp_status')->comment('Status Jenis Pendaftaran')->default(0);
+            $table->string('wrgn_kode')->comment('Kode Kewarganegaraan');
+            $table->string('wrgn_nama')->comment('Kewarganegaraan');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jnp');
+        Schema::dropIfExists('wrgn');
     }
 };

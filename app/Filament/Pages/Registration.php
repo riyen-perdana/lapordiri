@@ -224,7 +224,7 @@ class Registration extends Register
                                 ->acceptedFileTypes(['application/pdf'])
                                 ->required()
                                 ->validationMessages([
-                                    'required' => 'Data Berkas Harus Diisi',
+                                    'required' => 'Kartu Tanda Penduduk Harus Diunggah',
                                     'mimes' => 'Format Berkas Harus PDF',
                                 ])
                         ])
