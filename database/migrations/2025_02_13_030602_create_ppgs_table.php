@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('ppg_nama')->comment('Nama Pendaftar');
             $table->string('ppg_email')->unique()->comment('Email Pendaftar');
             $table->string('ppg_nim')->comment('Nomor Induk Mahasiswa')->nullable();
-            $table->string('ppg_jnp_id')->comment('UUID Jenis Pendaftaran Relasi Tabel Jnp');
             $table->enum('ppg_kps',['Y','N'])->comment('Penerima KPS')->default('N');
             $table->enum('ppg_jk',['L','P'])->comment('Jenis Kelamin')->default('L');
             $table->string('ppg_agm_id')->comment('UUID Agama Relasi Tabel Agm');
@@ -33,7 +32,7 @@ return new class extends Migration
             $table->string('ppg_wrgn_id')->comment('UUID Kewarganegaraan');
             $table->string('ppg_sklh')->comment('Sekolah Tempat Mengajar');
             $table->string('ppg_no_ops')->comment('Nomor Operator Sekolah');
-            $table->string('ppg_prpd_id')->comment('UUID Program Studi Relasi Kode Program Studi');
+            $table->string('ppg_prdp_id')->comment('UUID Program Studi Relasi Kode Program Studi');
             $table->string('ppg_ipk')->comment('IPK Strata 1');
             $table->string('ppg_uktp')->comment('File KTP');
             $table->string('ppg_foto')->comment('File Foto');
@@ -50,9 +49,8 @@ return new class extends Migration
             $table->foreign('ppg_jnp_id')->references('id')->on('jnp');
             $table->foreign('ppg_agm_id')->references('id')->on('agm');
             $table->foreign('ppg_kec_id')->references('id')->on('kec');
-            $table->foreign('ppg_prpd_id')->references('id')->on('prpd');
+            $table->foreign('ppg_prdp_id')->references('id')->on('prdp');
             $table->foreign('ppg_jlp_id')->references('id')->on('jlp');
-            $table->foreign('ppg_jnp_id')->references('id')->on('jnp');
             // $table->foreign('ppg_wrgn_id')->references('id')->on('wrgn');
 
 

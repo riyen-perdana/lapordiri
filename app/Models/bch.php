@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
-class bch extends Model
+class Bch extends Model
 {
     protected $table = 'bch';
     public $keyType = 'string';

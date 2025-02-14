@@ -46,6 +46,26 @@
     <section class="bg-gray-50 pt-10">
         <div class="max-w-screen-2xl px-4 py-8 mx-auto lg:py-16 lg:px-6">
             <div class="max-w-screen-2xl mx-auto">
+
+                    @if (session()->has('message'))
+                        <div id="alert-additional-content-3" class="p-4 mb-4 text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800" role="alert">
+                            <div class="flex items-center">
+                                <span class="sr-only">Info</span>
+                                    <h3 class="text-lg font-medium">
+                                        Penyimpanan Data Lapor Diri Berhasil
+                                    </h3>
+                                </div>
+                            <div class="mt-2 mb-4 text-sm">
+                                {{ session('message') }}
+                            </div>
+                            <div class="flex">
+                                <button type="button" class="text-green-800 bg-transparent border border-green-800 hover:bg-green-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-green-600 dark:border-green-600 dark:text-green-400 dark:hover:text-white dark:focus:ring-green-800" data-dismiss-target="#alert-additional-content-3" aria-label="Close">
+                                    Tutup
+                                </button>
+                            </div>
+                        </div>
+                    @endif
+
                     <h1 class="flex justify-center mb-4 text-2xl font-extrabold leading-tight tracking-tight text-gray-900 pb-10">Formulir Pendaftaran</h1>
                     {{-- <a href="{{ route('beranda.index')}}" class="flex items-center justify-end w-full px-5 py-3 text-sm font-medium text-center text-gray-900 border border-gray-200 rounded-lg sm:w-auto hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
                         <img class="w-6 h-6 mr-2 text-gray-500 dark:text-gray-400" src="{{ asset('images/logo-uin-suska.png') }}"></img> Kembali Ke Beranda
