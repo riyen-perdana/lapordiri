@@ -44,10 +44,15 @@ return new class extends Migration
             $table->string('ppg_strf')->comment('File Sertifikat Ajar');
             $table->string('ppg_dkmn')->comment('File Dokumen Ajar');
             $table->string('ppg_invs')->comment('File Inovasi');
+            $table->string('ppg_jlp_id')->comment('UUID Jalur Penerimaan Relasi Kode Jalur Penerimaan');
+            $table->string('ppg_jnp_id')->comment('UUID Jenis Pendaftaran Relasi Kode Jenis Pendaftaran');
             $table->timestamps();
             $table->foreign('ppg_jnp_id')->references('id')->on('jnp');
             $table->foreign('ppg_agm_id')->references('id')->on('agm');
             $table->foreign('ppg_kec_id')->references('id')->on('kec');
+            $table->foreign('ppg_prpd_id')->references('id')->on('prpd');
+            $table->foreign('ppg_jlp_id')->references('id')->on('jlp');
+            $table->foreign('ppg_jnp_id')->references('id')->on('jnp');
             // $table->foreign('ppg_wrgn_id')->references('id')->on('wrgn');
 
 

@@ -13,6 +13,7 @@ class Jnp extends Model
     public $incrementing = false;
     protected $fillable = [
         'jnp_nama',
+        'jnp_mb',
         'jnp_status',
     ];
 

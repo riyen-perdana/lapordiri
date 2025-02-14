@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\JnpResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\JnpResource\RelationManagers;
+use Filament\Support\RawJs;
 
 class JnpResource extends Resource
 {
@@ -36,6 +37,18 @@ class JnpResource extends Resource
                         'maxLength' => 'Kolom Jenis Penerimaan Maksimal 255 Karakter',
                     ])
                     ->label('Jenis Penerimaan'),
+                Forms\Components\TextInput::make('jnp_mb')
+                    ->required()
+                    ->mask(RawJs::make('$money($input)'))
+                    ->stripCharacters(',')
+                    ->numeric()
+                    ->validationMessages([
+                        'required' => 'Kolom Biaya Masuk Harus Diisi',
+                        'numeric' => 'Kolom Biaya Masuk Harus Angka',
+                    ])
+                    ->label('Biaya Masuk')
+                    ->prefix('Rp. ')
+                    ->default(0),
                 Forms\Components\Toggle::make('jnp_status')
                     ->label('Status Jenis Penerimaan')
                     ->default(false)
@@ -61,6 +74,11 @@ class JnpResource extends Resource
                     ->label('Jenis Penerimaan')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('jnp_mb')
+                    ->label('Biaya Masuk')
+                    ->sortable()
+                    ->searchable()
+                    ->formatStateUsing(fn (string $state): string => 'Rp. ' . number_format($state, 0, ',', '.')),
                 Tables\Columns\ToggleColumn::make('jnp_status')
                     ->label('Status')
                     ->sortable()

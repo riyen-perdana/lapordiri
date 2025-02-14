@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('jnp', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('jnp_nama')->comment('Jenis Pendaftaran');
-            $table->integer('jnp_mb')->comment('Biaya Masuk')->nullable();
+            $table->integer('jnp_mb')->comment('Biaya Masuk')->default(0);
             $table->integer('jnp_status')->comment('Status Jenis Pendaftaran')->default(0);
             $table->timestamps();
         });
