@@ -156,6 +156,7 @@ class Register extends Component implements HasForms, HasActions
                                 ->email()
                                 ->validationMessages([
                                     'required' => 'Nama Lengkap Sesuai Ijazah Terakhir Harus Diisi',
+                                    'unique' => 'Email Sudah Terdaftar, Isikan Yang Lain',
                                     'email' => 'Format Email Harus Valid',
                                 ]),
                             Select::make('ppg_kps')
@@ -260,7 +261,7 @@ class Register extends Component implements HasForms, HasActions
                                 ->label('Nomor HP Aktif')
                                 ->placeholder('Contoh: 08123456789')
                                 ->numeric()
-                                ->regex('/^0(8[1-9][0-9]{5,8})$/')
+                                ->regex('/^08[0-9]{8,12}$/')
                                 ->required()
                                 ->validationMessages([
                                     'required' => 'Nomor HP Harus Diisi',
@@ -271,7 +272,7 @@ class Register extends Component implements HasForms, HasActions
                                 ->label('Nomor WhatsApp Aktif')
                                 ->placeholder('Contoh: 08123456789')
                                 ->numeric()
-                                ->regex('/^0(8[1-9][0-9]{5,8})$/')
+                                ->regex('/^08[0-9]{8,12}$/')
                                 ->required()
                                 ->validationMessages([
                                     'required' => 'Nomor WhatsApp Harus Diisi',
