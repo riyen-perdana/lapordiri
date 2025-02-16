@@ -311,7 +311,7 @@ class Register extends Component implements HasForms, HasActions
                                 ]),
                             TextInput::make('ppg_no_ops')
                                 ->label('Nomor Operator Sekolah')
-                                ->regex('/^0(8[1-9][0-9]{5,8})$/')
+                                ->regex('/^08[0-9]{8,12}$/')
                                 ->numeric()
                                 ->required()
                                 ->validationMessages([
