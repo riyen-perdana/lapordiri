@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Ppg extends Model
 {
@@ -48,6 +49,10 @@ class Ppg extends Model
         'ppg_sts_vrf'
     ];
 
+    protected $cast = [
+        'ppg_tgl_lhr' => 'datetime',
+    ];
+
     public static function boot()
     {
         parent::boot();
@@ -87,6 +92,21 @@ class Ppg extends Model
             set: fn ($value) => Str::lower($value),
             get: fn ($value) => Str::upper($value),
         );
+    }
+
+    public function agm(): BelongsTo
+    {
+        return $this->belongsTo(Agm::class, 'ppg_agm_id');
+    }
+
+    public function kec() : BelongsTo
+    {
+        return $this->belongsTo(Kec::class,'ppg_kec_id');
+    }
+
+    public function prdp() : BelongsTo
+    {
+        return $this->belongsTo(Prdp::class,'ppg_prdp_id');
     }
 
     
