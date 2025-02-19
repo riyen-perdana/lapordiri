@@ -27,6 +27,7 @@ use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Actions\Action;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PpgResource\RelationManagers;
+use Filament\Tables\Actions\ActionGroup;
 
 class PpgResource extends Resource
 {
@@ -90,29 +91,40 @@ class PpgResource extends Resource
                     ->label('Tanggal Daftar')
                     ->dateTime(fn(Ppg $record): ?string => date_format($record->created_at, 'd-m-Y'))
                     ->sortable()
+                    ->searchable(),
+                Tables\Columns\ToggleColumn::make('ppg_sts_vrf')
+                    ->label('Status Verifikasi')
+                    ->sortable()
                     ->searchable()
+                    ->onIcon('heroicon-m-check-circle')
+                    ->offIcon('heroicon-m-x-circle')
+                    ->onColor('success')
+                    ->verticalAlignment('end'),
             ])
             ->filters([
-                //
+                
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make()
-                    ->label('Detail')
-                    ->modalHeading(fn(Ppg $record) => 'Detail Data Peserta ' . $record->ppg_nama . ''),
-                Tables\Actions\DeleteAction::make()
-                    ->label('Hapus')
-                    ->requiresConfirmation()
-                    ->successNotification(
-                        Notification::make()
-                            ->success()
-                            ->title('Sukses')
-                            ->body('Data Peserta Berhasil Dihapus')
-                    )
-                    ->modalHeading(fn(Ppg $record) => 'Hapus Data Batch ' . $record->ppg_nama . '')
-                    ->modalDescription('Apakah Anda Yakin Menghapus Data Ini?')
-                    ->modalCancelActionLabel('Tidak')
-                    ->modalSubmitActionLabel('Ya, Hapus Data'),
+                ActionGroup::make([
+                    // Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make()
+                        ->label('Detail')
+                        ->modalHeading(fn(Ppg $record) => 'Detail Data Peserta ' . $record->ppg_nama . '')
+                        ->modalCloseButton(false),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('Hapus')
+                        ->requiresConfirmation()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Sukses')
+                                ->body('Data Peserta Berhasil Dihapus')
+                        )
+                        ->modalHeading(fn(Ppg $record) => 'Hapus Data Peserta ' . $record->ppg_nama . '')
+                        ->modalDescription('Apakah Anda Yakin Menghapus Data Ini?')
+                        ->modalCancelActionLabel('Tidak')
+                        ->modalSubmitActionLabel('Ya, Hapus Data'),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -159,11 +171,14 @@ class PpgResource extends Resource
                     ]),
                     
                     Section::make('Data Peserta PPG Universitas Islam Negeri Sultan Syarif Kasim Riau')
+                    ->hiddenLabel()
                     ->footerActions([
                         Action::make('Verifikasi')
-                            ->action(function () {
-                                // ...
-                            }),
+                            ->label(fn(Ppg $ppg): ?string => $ppg->ppg_sts_vrf == 1 ? 'Sudah Diverifikasi' : 'Belum Diverifikasi')
+                            ->action(fn (Ppg $ppg) => $ppg->update([
+                                'ppg_sts_vrf' => 1
+                                ])
+                            ),
                     ])
                     ->footerActionsAlignment(Alignment::End)
                     ->schema([
@@ -347,6 +362,9 @@ class PpgResource extends Resource
                                     ])
                                     ->columns(2),
                             ])        
+                    ])
+                    ->extraAttributes([
+                        'class' => 'border-none',
                     ])
             ]);
     }
