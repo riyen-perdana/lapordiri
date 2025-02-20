@@ -28,6 +28,7 @@ use Filament\Infolists\Components\Actions\Action;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PpgResource\RelationManagers;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Filters\SelectFilter;
 
 class PpgResource extends Resource
 {
@@ -92,17 +93,25 @@ class PpgResource extends Resource
                     ->dateTime(fn(Ppg $record): ?string => date_format($record->created_at, 'd-m-Y'))
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ToggleColumn::make('ppg_sts_vrf')
-                    ->label('Status Verifikasi')
+                Tables\Columns\TextColumn::make('ppg_sts_vrf')
+                    ->label('Status')
                     ->sortable()
                     ->searchable()
-                    ->onIcon('heroicon-m-check-circle')
-                    ->offIcon('heroicon-m-x-circle')
-                    ->onColor('success')
-                    ->verticalAlignment('end'),
+                    ->badge()
+                    ->color(function (Ppg $record) {
+                        return $record->ppg_sts_vrf === 1 ? 'success' : 'danger';
+                    })
+                    ->formatStateUsing(fn($record) => $record->ppg_sts_vrf === 1 ? 'Verifikasi' : 'Belum Verifikasi'),
             ])
             ->filters([
-                
+                SelectFilter::make('ppg_set_id')
+                    ->relationship('set', 'set_thn')
+                    ->label('Tahun')
+                    ->preload(),
+                SelectFilter::make('ppg_bc_id')
+                    ->relationship('bch', 'bch_sesi')
+                    ->label('Batch')
+                    ->preload(),
             ])
             ->actions([
                 ActionGroup::make([
@@ -169,16 +178,18 @@ class PpgResource extends Resource
                         'xl' => 1,
                         '2xl' => 1,
                     ]),
-                    
-                    Section::make('Data Peserta PPG Universitas Islam Negeri Sultan Syarif Kasim Riau')
+
+                Section::make('Data Peserta PPG Universitas Islam Negeri Sultan Syarif Kasim Riau')
                     ->hiddenLabel()
                     ->footerActions([
                         Action::make('Verifikasi')
                             ->label(fn(Ppg $ppg): ?string => $ppg->ppg_sts_vrf == 1 ? 'Sudah Diverifikasi' : 'Belum Diverifikasi')
-                            ->action(fn (Ppg $ppg) => $ppg->update([
-                                'ppg_sts_vrf' => 1
+                            ->action(
+                                fn(Ppg $ppg) => $ppg->update([
+                                    'ppg_sts_vrf' => 1
                                 ])
-                            ),
+                            )
+                            ->disabled(fn(Ppg $ppg): bool => $ppg->ppg_sts_vrf == 1),
                     ])
                     ->footerActionsAlignment(Alignment::End)
                     ->schema([
@@ -361,11 +372,13 @@ class PpgResource extends Resource
                                             ->url(fn(Ppg $record): string => '/storage/' . $record->ppg_invs, shouldOpenInNewTab: true),
                                     ])
                                     ->columns(2),
-                            ])        
-                    ])
-                    ->extraAttributes([
-                        'class' => 'border-none',
+                            ])
                     ])
             ]);
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }
