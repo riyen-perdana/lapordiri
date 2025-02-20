@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Semester;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +17,7 @@ class Set extends Model
     protected $casts = [
         'set_smt' => Semester::class,
     ];
+
 
     public static function boot()
     {

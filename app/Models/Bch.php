@@ -25,4 +25,5 @@ class Bch extends Model
             $model->id = Str::uuid();
         });
     }
+
 }

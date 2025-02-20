@@ -5,7 +5,10 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Observers\PpgObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([PpgObserver::class])]
 class Ppg extends Model
 {
     protected $table = 'ppg';
@@ -107,6 +110,16 @@ class Ppg extends Model
     public function prdp() : BelongsTo
     {
         return $this->belongsTo(Prdp::class,'ppg_prdp_id');
+    }
+
+    public function set() : BelongsTo
+    {
+        return $this->belongsTo(Set::class,'ppg_set_id');
+    }
+
+    public function bch() : BelongsTo
+    {
+        return $this->belongsTo(Bch::class,'ppg_batch_id');
     }
 
     
