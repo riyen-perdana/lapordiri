@@ -38,4 +38,5 @@ class Kec extends Model
     {
         return $this->belongsTo(Kkot::class, 'kec_kkot_id');
     }
+    
 }

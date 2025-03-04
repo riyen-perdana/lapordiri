@@ -138,6 +138,15 @@ class PpgResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ExportBulkAction::make()
+                        ->label('Export Data PPG')
+                        ->exporter('App\Filament\Exports\PpgExporter')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Sukses')
+                                ->body('Data Peserta PPG Berhasil Diexport')
+                        ),
                 ]),
             ]);
     }
