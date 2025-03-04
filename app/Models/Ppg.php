@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Observers\PpgObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 #[ObservedBy([PpgObserver::class])]
 class Ppg extends Model
@@ -122,5 +123,8 @@ class Ppg extends Model
         return $this->belongsTo(Bch::class,'ppg_batch_id');
     }
 
-    
+    public function kecKkot(): HasOneThrough
+    {
+        return $this->hasOneThrough(Kkot::class, Kec::class, 'ppg_kec_id', 'kec_kkot_id', 'id', 'id');
+    }
 }
