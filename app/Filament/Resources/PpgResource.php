@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Semester;
 use App\Models\Ppg;
 use Filament\Forms;
 use Filament\Tables;
@@ -29,6 +30,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PpgResource\RelationManagers;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class PpgResource extends Resource
 {
@@ -146,8 +149,96 @@ class PpgResource extends Resource
                                 ->success()
                                 ->title('Sukses')
                                 ->body('Data Peserta PPG Berhasil Diexport')
-                        ),
+                        )
                 ]),
+                Tables\Actions\BulkAction::make('Export')
+                    ->label('Export Ke iRaise')
+                    ->icon('heroicon-o-arrow-down')
+                    ->action(
+                        function (Collection $records) {
+                            $records->each(function (Ppg $record) {
+                                $nim = $record->ppg_nim;
+                                $mhs = DB::connection('iraise')->table('mahasiswa')->where('id_pd', $nim)->first();
+                                if(!$mhs) {
+
+                                    //Create Data Mahasiswa
+                                    DB::connection('iraise')->table('mahasiswa')->insert([
+                                        'id_pd' => $nim,
+                                        'nm_pd' => $record->ppg_nama,
+                                        'jk' => $record->ppg_jk,
+                                        'tgl_lahir' => $record->ppg_tgl_lhr,
+                                        'tmpt_lahir' => $record->ppg_tpt_lhr,
+                                        'nm_ibu_kandung' => $record->ppg_ibu,
+                                        'id_agama' => '1',
+                                        'kewarganegaraan' => 'ID',
+                                        'nisn' => $record->ppg_nisn,
+                                        'nik' => $record->ppg_nik,
+                                        'ds_kel' => $record->ppg_kel,
+                                        'email' => $record->ppg_email,
+                                        'id_wil' => str_pad($record->kec->kec_kode, 6, '0', STR_PAD_LEFT),
+                                        'id_sp' => 'b2cb4d44-187c-4e2d-8e5b-f4f2ae1a6df8',
+                                        'regpd_id_jns_daftar' => '18',
+                                        'regpd_id_sms' => 'PPG',
+                                        'id_jalur_penerimaan' => '11',
+                                        'telepon_seluler' => $record->ppg_no_hp,
+                                        'a_terima_kps' => '0',
+                                        'stat_pd' => 'A',
+                                        'regpd_nipd' => $nim,
+                                        'regpd_mulai_smt' => $record->set->set_thn .''. $record->set->set_smt->getValue(),
+                                        'password' => md5($nim),
+                                        'pilihan_kelas' => 'A',
+                                        'status_program' => 'REGULER'
+                                    ]);
+
+                                    //Create Data Mahasiswa History
+                                    DB::connection('iraise')->table('mahasiswa_history')->insert([
+                                        'id_sms' => 'PPG',
+                                        'id_sp' => $nim,
+                                        'id_jns_daftar' => '18',
+                                        'nipd' => $nim,
+                                        'tgl_masuk_sp' => now(),
+                                        'a_pernah_paud' => '1',
+                                        'a_pernah_tk' => '0',
+                                        'mulai_smt' => $record->set->set_thn .''. $record->set->set_smt->getValue(),
+                                        'biaya_masuk' => $record->jnp->jnp_mb,
+                                        'id_jalur_masuk' => '11',
+                                    ]);
+
+                                    //Create Data Kuliah_mhs
+                                    DB::connection('iraise')->table('kuliah_mhs')->insert([
+                                        'id_smt' => $record->set->set_thn .''. $record->set->set_smt->getValue(),
+                                        'id_reg_pd' => $nim,
+                                        'ips' => 0,
+                                        'sks_smt' => 24,
+                                        'ipk' => 0,
+                                        'sks_total' => 24,
+                                        'id_stat_mhs' => 'A',
+                                        'semester' => 1,
+                                        'tgl_bayar' => now(),
+                                        'jlh_bayar' => $record->jnp->jnp_mb,
+                                        'status_bayar' => 1,
+                                        'sks_max' => 24,
+                                        'paket' => 1,
+                                        'total_bayar' => $record->jnp->jnp_mb,
+
+                                    ]);
+
+                                    //Create Data Biodata_Transfer
+                                    DB::connection('iraise')->table('biodata_transfer')->insert([
+                                        'id_reg_pd' => $nim,
+                                        'kategori_transfer' => 'Transfer Luar',
+                                        'id_sp_asal' => $record->prdp->unv->id,
+                                        'id_sms_asal' => $record->ppg_prdp_id,
+                                    ]);
+                                }
+                            });
+                            Notification::make()
+                                ->title('Sukses')
+                                ->body('Data Peserta PPG Berhasil Diexport')
+                                ->success()
+                                ->send();
+                        }
+                    )
             ]);
     }
 
