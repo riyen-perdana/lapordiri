@@ -64,11 +64,11 @@ return [
 
         'iraise' => [
             'driver' => 'mysql',
-            'host' => '127.0.0.1',
-            'port' => '3306',
-            'database' => 'irai_iraise',
-            'username' => 'root',
-            'password' => '',
+            'host' => env('DB_HOST_IRAISE', '127.0.0.1'),
+            'port' => env('DB_PORT_IRAISE', '3306'),
+            'database' => env('DB_DATABASE_IRAISE', 'laravel'),
+            'username' => env('DB_USERNAME_IRAISE', 'root'),
+            'password' => env('DB_PASSWORD_IRAISE', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
