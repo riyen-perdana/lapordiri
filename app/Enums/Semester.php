@@ -12,8 +12,8 @@ enum Semester : string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::Ganjil => 'Genap',
-            self::Genap => 'Ganjil',
+            self::Ganjil => 'Ganjil',
+            self::Genap => 'Genap',
         };
     }
 
@@ -23,6 +23,11 @@ enum Semester : string implements HasLabel
             self::Ganjil => 'danger',
             self::Genap => 'success',
         };
+    }
+
+    public function getValue(): string
+    {
+        return $this->value;
     }
 
     public function isGanjil(): bool

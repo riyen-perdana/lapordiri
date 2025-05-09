@@ -127,4 +127,9 @@ class Ppg extends Model
     {
         return $this->hasOneThrough(Kkot::class, Kec::class, 'ppg_kec_id', 'kec_kkot_id', 'id', 'id');
     }
+
+    public function jnp(): BelongsTo
+    {
+        return $this->belongsTo(Jnp::class, 'ppg_jnp_id');
+    }
 }
