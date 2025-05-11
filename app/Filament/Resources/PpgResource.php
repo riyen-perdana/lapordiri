@@ -202,26 +202,46 @@ class PpgResource extends Resource
                                         'mulai_smt' => $record->set->set_thn .''. $record->set->set_smt->getValue(),
                                         'biaya_masuk' => $record->jnp->jnp_mb,
                                         'id_jalur_masuk' => '11',
+                                        'id_pembiayaan' => '3',
                                     ]);
 
                                     //Create Data Kuliah_mhs
-                                    DB::connection('iraise')->table('kuliah_mhs')->insert([
-                                        'id_smt' => $record->set->set_thn .''. $record->set->set_smt->getValue(),
-                                        'id_reg_pd' => $nim,
-                                        'ips' => 0,
-                                        'sks_smt' => 24,
-                                        'ipk' => 0,
-                                        'sks_total' => 24,
-                                        'id_stat_mhs' => 'A',
-                                        'semester' => 1,
-                                        'tgl_bayar' => now(),
-                                        'jlh_bayar' => $record->jnp->jnp_mb,
-                                        'status_bayar' => 1,
-                                        'sks_max' => 24,
-                                        'paket' => 1,
-                                        'total_bayar' => $record->jnp->jnp_mb,
+                                    $id_smt = intval($record->set->set_thn .''. $record->set->set_smt->getValue());
+                                    $jlh_bayar = $record->jnp->jnp_mb;
+                                    $total_bayar = $record->jnp->jnp_mb;
+                                    
+                                    // for ($i=1; $i <= 2; $i++) {
+                                    //     if($i == 1) {
+                                    //         $id_smt = $id_smt;
+                                    //         $jlh_bayar = $record->jnp->jnp_mb;
+                                    //         $total_bayar = $record->jnp->jnp_mb;
+                                    //     } else {
+                                    //         if(intval($id_smt) % 2 == 0) {
+                                    //             $id_smt = $id_smt + 9;
+                                    //         } else {
+                                    //             $id_smt = $id_smt + 1;
+                                    //         }
+                                    //         $jlh_bayar = 0;
+                                    //         $total_bayar = 0;
+                                    //     }
 
-                                    ]);
+                                        DB::connection('iraise')->table('kuliah_mhs')->insert([
+                                            'id_smt' => $id_smt,
+                                            'id_reg_pd' => $nim,
+                                            'ips' => 0,
+                                            'sks_smt' => 24,
+                                            'ipk' => 0,
+                                            'sks_total' => 24,
+                                            'id_stat_mhs' => 'A',
+                                            'semester' => 1,
+                                            'tgl_bayar' => now(),
+                                            'jlh_bayar' => $jlh_bayar,
+                                            'status_bayar' => 1,
+                                            'sks_max' => 24,
+                                            'paket' => 1,
+                                            'total_bayar' => $total_bayar,
+                                        ]);
+                                    // }
 
                                     //Create Data Biodata_Transfer
                                     DB::connection('iraise')->table('biodata_transfer')->insert([
